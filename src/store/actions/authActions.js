@@ -15,16 +15,45 @@
 // }
 
 export const signInGoogle = () => {
-	return (dispatch, getState, { getFirebase }) => {
+	return (dispatch, getState, { getFirebase, getFirestore }) => {
 		const firebase = getFirebase();
+		const firestore = getFirestore();
+
 		dispatch({ type: 'LOGIN_LOADING' });
 		firebase
 			.login({ provider: 'google', type: 'popup' })
+			.then((resp) => {
+				return firestore.collection('users').doc(resp.user.uid).update({
+					lastLoginAt: new Date()
+				});
+			})
 			.then(() => {
 				dispatch({ type: 'LOGIN_SUCCESS' });
 			})
 			.catch((err) => {
 				dispatch({ type: 'LOGIN_ERROR', err });
+			});
+	};
+};
+
+export const signUpGoogle = () => {
+	return (dispatch, getState, { getFirebase, getFirestore }) => {
+		const firebase = getFirebase();
+		const firestore = getFirestore();
+
+		dispatch({ type: 'SIGNUP_LOADING' });
+		firebase
+			.login({ provider: 'google', type: 'popup' })
+			.then((resp) => {
+				return firestore.collection('users').doc(resp.user.uid).update({
+					createdAt: new Date()
+				});
+			})
+			.then(() => {
+				dispatch({ type: 'SIGNUP_SUCCESS' });
+			})
+			.catch((err) => {
+				dispatch({ type: 'SIGNUP_ERROR', err });
 			});
 	};
 };
@@ -40,6 +69,28 @@ export const signInFacebook = () => {
 			})
 			.catch((err) => {
 				dispatch({ type: 'LOGIN_ERROR', err });
+			});
+	};
+};
+
+export const signUpFacebook = () => {
+	return (dispatch, getState, { getFirebase, getFirestore }) => {
+		const firebase = getFirebase();
+		const firestore = getFirestore();
+
+		dispatch({ type: 'SIGNUP_LOADING' });
+		firebase
+			.login({ provider: 'facebook', type: 'popup' })
+			.then((resp) => {
+				return firestore.collection('users').doc(resp.user.uid).update({
+					createdAt: new Date()
+				});
+			})
+			.then(() => {
+				dispatch({ type: 'SIGNUP_SUCCESS' });
+			})
+			.catch((err) => {
+				dispatch({ type: 'SIGNUP_ERROR', err });
 			});
 	};
 };

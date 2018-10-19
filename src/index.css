@@ -38,6 +38,10 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 	color: #ec407a !important;
 }
 
+.mt-15 {
+	margin-top: 15px;
+}
+
 .login-buttons {
 	padding: 60px;
 	background: white;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signInGoogle, signInFacebook } from '../../store/actions/authActions';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 class SignIn extends Component {
 	handleChange = (e) => {
@@ -44,6 +44,9 @@ class SignIn extends Component {
 					>
 						<i className="fab fa-facebook-square" /> Facebook
 					</a>
+					<div className="center grey-text mt-15">
+						No tenes cuenta? <Link to="/signup">Click!</Link>
+					</div>
 					<div className="center red-text">{authError ? <p>{authError}</p> : null}</div>
 				</div>
 			</div>
