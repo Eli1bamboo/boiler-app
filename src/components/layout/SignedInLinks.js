@@ -9,9 +9,11 @@ const SignedInLinks = (props) => {
 	return (
 		<div>
 			<ul className="right">
-				<li>
-					<NavLink to="/users">Users</NavLink>
-				</li>
+				{props.profile.isAdmin ? (
+					<li>
+						<NavLink to="/users">Users</NavLink>
+					</li>
+				) : null}
 				<li>
 					<NavLink to="/create">New Project</NavLink>
 				</li>
