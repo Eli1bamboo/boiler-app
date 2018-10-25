@@ -63,7 +63,11 @@ export const signInFacebook = () => {
 		const firebase = getFirebase();
 
 		firebase
-			.login({ provider: 'facebook', type: 'popup' })
+			.login({
+				provider: 'facebook',
+				type: 'popup',
+				scopes: [ 'user_birthday', 'email' ]
+			})
 			.then(() => {
 				dispatch({ type: 'LOGIN_SUCCESS' });
 			})
