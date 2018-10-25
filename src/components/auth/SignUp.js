@@ -33,7 +33,7 @@ class SignIn extends Component {
 						<div className="indeterminate" />
 					</div>
 				) : null}
-				<div className="login-buttons hoverable">
+				<div className="login-buttons hoverable animated fadeInUp">
 					<h4>Sign Up with:</h4>
 					<a className="waves-effect waves-light btn-large red darken-1" onClick={this.handleSubmitGoogle}>
 						<i className="fab fa-google-plus-square" /> Google
