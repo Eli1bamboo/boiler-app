@@ -42,6 +42,7 @@ export const signUpGoogle = () => {
 		const firestore = getFirestore();
 
 		dispatch({ type: 'SIGNUP_LOADING' });
+
 		firebase
 			.login({ provider: 'google', type: 'popup' })
 			.then((resp) => {

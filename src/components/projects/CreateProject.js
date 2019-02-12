@@ -6,22 +6,26 @@ import { Redirect } from 'react-router-dom';
 class CreateProject extends Component {
 	state = {
 		title: '',
-		content: ''
+		content: '',
+		file: null
 	};
+
 	handleChange = (e) => {
 		this.setState({
-			[e.target.id]: e.target.value
+			[e.target.id]: e.target.id === 'file' ? e.target.files[0] : e.target.value
 		});
 	};
+
 	handleSubmit = (e) => {
 		e.preventDefault();
 		// console.log(this.state);
 		this.props.createProject(this.state);
-		this.props.history.push('/');
 	};
 
 	render() {
 		const { auth } = this.props;
+		console.log(this.state, this.props);
+
 		if (!auth.uid) return <Redirect to="/signin" />;
 		return (
 			<div className="container">
@@ -34,6 +38,15 @@ class CreateProject extends Component {
 					<div className="input-field">
 						<textarea id="content" className="materialize-textarea" onChange={this.handleChange} />
 						<label htmlFor="content">Project Content</label>
+					</div>
+					<div className="file-field input-field">
+						<div className="btn">
+							<span>File</span>
+							<input type="file" id="file" onChange={this.handleChange} />
+						</div>
+						<div className="file-path-wrapper">
+							<input className="file-path validate" type="text" />
+						</div>
 					</div>
 					<div className="input-field">
 						<button className="btn pink lighten-1">Create</button>

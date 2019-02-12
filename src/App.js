@@ -11,6 +11,10 @@ import SignUp from './components/auth/SignUp';
 
 class App extends Component {
 	render() {
+		const { authConfig } = this.props;
+
+		console.log(authConfig);
+
 		return (
 			<BrowserRouter>
 				<div className="App">
