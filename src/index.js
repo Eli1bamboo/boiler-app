@@ -14,6 +14,8 @@ import authConfig from './config/authConfig';
 import fbConfig from './config/fbConfig';
 import rrfConfig from './config/rrfConfig';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 const store = createStore(
 	rootReducer,
 	composeWithDevTools(
@@ -26,7 +28,9 @@ const store = createStore(
 store.firebaseAuthIsReady.then(() => {
 	ReactDOM.render(
 		<Provider store={store}>
-			<App authConfig={authConfig} />
+		  <MuiThemeProvider>
+				<App authConfig={authConfig} />
+			</MuiThemeProvider>
 		</Provider>,
 		document.getElementById('root')
 	);

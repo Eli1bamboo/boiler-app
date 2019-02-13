@@ -1,35 +1,35 @@
-export const createProject = (project) => {
+export const createContent = (content) => {
 	return (dispatch, getState, { getFirebase, getFirestore }) => {
 		const firebase = getFirebase();
 		const firestore = getFirestore();
 		const profile = getState().firebase.profile;
 		const authorId = getState().firebase.auth.uid;
 
-		if (project.file) {
-			const file = project.file;
+		if (content.file) {
+			const file = content.file;
 
 			firebase
 				.uploadFile('files', file, null, { progress: true })
 				.then(() => {
-					dispatch({ type: 'CREATE_PROJECT_SUCCESS' });
+					dispatch({ type: 'CREATE_CONTENT_SUCCESS' });
 				})
 				.catch((err) => {
-					dispatch({ type: 'CREATE_PROJECT_ERROR' }, err);
+					dispatch({ type: 'CREATE_CONTENT_ERROR' }, err);
 				});
 		} else {
 			firestore
-				.collection('projects')
+				.collection('content')
 				.add({
-					...project,
+					...content,
 					authorName: profile.displayName,
 					authorId: authorId,
 					createdAt: new Date()
 				})
 				.then(() => {
-					dispatch({ type: 'CREATE_PROJECT_SUCCESS' });
+					dispatch({ type: 'CREATE_CONTENT_SUCCESS' });
 				})
 				.catch((err) => {
-					dispatch({ type: 'CREATE_PROJECT_ERROR' }, err);
+					dispatch({ type: 'CREATE_CONTENT_ERROR' }, err);
 				});
 		}
 	};
