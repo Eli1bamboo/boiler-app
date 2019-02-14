@@ -1,27 +1,57 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { createContent } from '../../../store/actions/contentActions'
+import { createContent } from '../../../../store/actions/contentActions'
 import firebase from 'firebase/app'
 
+const styles = {
+	uploadButton: {
+		marginLeft: 12,
+		Zindex: 9999
+	}
+}
+
 class ImageForm extends Component {
-	state = {
-		title: '',
-		content: '',
-		downloadURL: null
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			content: {},
+			isValidFormat: null
+		}
+
+		// create a ref to store the textInput DOM element
+		this.image = React.createRef()
 	}
 
 	handleChange = (e) => {
+		const state = this.state
+
 		this.setState({
-			[e.target.id]: e.target.value
+			content: { ...state.content, [e.target.id]: e.target.value }
 		})
+	}
+
+	handleImageValidation = () => {
+		const image = this.image.current.files[0]
+		const validExtentions = [ 'jpg', 'png' ]
+		const maxWeight = 1000
+		const imageExtention = _.last(image.name.split('.')).toLowerCase()
+
+		if (this.image) {
+			console.log(imageExtention)
+			return true
+		}
 	}
 
 	handleImageUpload = (e) => {
 		e.preventDefault()
 
-		const file = e.target.files[0]
-		const fileExtention = _.last(file.name.split('.')).toLowerCase()
+		// const image = e.target.files[0]
+
+		console.log(this.handleImageValidation())
+
+		// console.log(this.handleImageValidation(image))
 
 		// const storageRef = firebase.storage().ref(`/files/${file.name}`);
 		// const task = storageRef.put(file);
@@ -54,8 +84,6 @@ class ImageForm extends Component {
 		// })
 		// console.log(this.state);
 		// Uncomment this when react-redux-firebase storage reducer is working.
-
-		console.log(fileExtention)
 	}
 
 	handleSubmit = (e) => {
@@ -76,15 +104,22 @@ class ImageForm extends Component {
 					<textarea id="content" className="materialize-textarea" onChange={this.handleChange} />
 					<label htmlFor="content">Content Content</label>
 				</div>
-				<div className="file-field input-field">
-					<div className="btn">
-						<span>Select Image</span>
-						<input type="file" id="file" onChange={this.handleImageUpload} />
+				<div className="flex-field">
+					<div className="file-field flex-1 input-field">
+						<div className="flex-content">
+							<div className="btn">
+								<span>Select Image</span>
+								<input type="file" id="file" ref={this.image} />
+							</div>
+							<div className="file-path-wrapper flex-1">
+								<input className="file-path validate" type="text" />
+							</div>
+						</div>
+						<span className="helper-text red-text">Helper text</span>
 					</div>
-					<div className="file-path-wrapper">
-						<input className="file-path validate" type="text" />
-					</div>
-					<span className="helper-text red-text">Helper text</span>
+					<button className="btn pink lighten-1" style={styles.uploadButton} onClick={this.handleImageUpload}>
+						Upload
+					</button>
 				</div>
 				<div className="input-field">
 					<button className="btn pink lighten-1">Create</button>

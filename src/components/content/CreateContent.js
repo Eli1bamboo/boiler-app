@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import { createContent } from '../../store/actions/contentActions'
 import { Redirect } from 'react-router-dom'
 import TextForm from './forms/TextForm'
-import ImageForm from './forms/ImageForm'
+import ImageForm from './forms/ImageForm/'
 import Dialog from 'material-ui/Dialog'
-import CircularProgress from 'material-ui/CircularProgress'
+import { CircularProgress, Tabs, Tab } from 'material-ui'
 
 const customContentStyle = {
 	width: 'auto',
@@ -17,7 +17,14 @@ const customContentStyle = {
 class CreateContent extends Component {
 	state = {
 		isUploading: false,
-		uploadValue: 0
+		uploadValue: 0,
+		selectedTab: 'text'
+	}
+
+	handleTabChange = (value) => {
+		this.setState({
+			selectedTab: value
+		})
 	}
 
 	render() {
@@ -27,8 +34,14 @@ class CreateContent extends Component {
 		if (!auth.uid) return <Redirect to="/signin" />
 		return (
 			<div className="container">
-				<TextForm />
-				<ImageForm />
+				<Tabs value={this.state.selectedTab} onChange={this.handleTabChange} className="form-container">
+					<Tab label="TEXT" value="text">
+						<TextForm />
+					</Tab>
+					<Tab label="IMAGE" value="image">
+						<ImageForm />
+					</Tab>
+				</Tabs>
 
 				<Dialog
 					title="Uploading file:"

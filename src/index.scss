@@ -13,9 +13,13 @@ body {
 	min-height: 100%;
 }
 
-form {
+.form-container {
 	padding: 20px;
 	margin-top: 60px;
+}
+
+form {
+	padding: 20px;
 }
 
 form button,
@@ -64,4 +68,13 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 	width: 100%;
 	z-index: 9999;
 	margin: 0;
+}
+
+.flex-field {
+	display: flex;
+	flex-direction: row;
+
+	.flex-1 {
+		flex: 1;
+	}
 }
