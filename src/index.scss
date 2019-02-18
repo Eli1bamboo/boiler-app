@@ -46,8 +46,8 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 	margin-top: 15px;
 }
 
-.login-buttons {
-	padding: 60px;
+.login-container {
+	padding: 30px 60px;
 	background: white;
 	position: fixed;
 	left: 50%;
@@ -55,10 +55,12 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 	transform: translate(-50%, -50%);
 	display: flex;
 	flex-direction: column;
-}
+	max-width: 35%;
+	width: 100%;
 
-.login-buttons .btn-large {
-	margin: 10px 0;
+	.btn-large {
+		margin: 10px 0;
+	}
 }
 
 .login-progress {
@@ -77,4 +79,8 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 	.flex-1 {
 		flex: 1;
 	}
+}
+
+.toggle-form {
+	padding: 20px;
 }

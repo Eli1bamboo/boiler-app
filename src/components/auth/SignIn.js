@@ -1,72 +1,86 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { signInGoogle, signInFacebook } from '../../store/actions/authActions';
-import { Redirect, Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { signInGoogle, signInFacebook } from '../../store/actions/authActions'
+import { Redirect, Link } from 'react-router-dom'
+import SocialForm from './forms/SocialForm'
+import EmailAndPasswordForm from './forms/EmailAndPasswordForm'
+import Toggle from 'material-ui/Toggle'
+
+const styles = {
+	labelStyle: {
+		color: '#9e9e9e',
+		fontSize: 15,
+		textAlign: 'right'
+	}
+}
 
 class SignIn extends Component {
-	handleChange = (e) => {
-		this.setState({
-			[e.target.id]: e.target.value
-		});
-	};
-	handleSubmitGoogle = (e) => {
-		e.preventDefault();
-		// this.props.signIn(this.state)
-		this.props.signInGoogle();
-	};
+	constructor(props) {
+		super(props)
+		const { authConfig } = this.props
 
-	handleSubmitFacebook = (e) => {
-		e.preventDefault();
-		// this.props.signIn(this.state)
-		this.props.signInFacebook();
-	};
+		this.state = {
+			displaySocialForm: authConfig.socialLogin && authConfig.userPWdLogin ? false : authConfig.socialLogin,
+			displayEmailAndPasswordForm:
+				authConfig.socialLogin && authConfig.userPWdLogin ? true : authConfig.userPWdLogin
+		}
+	}
+
+	handleOnToggle = () => {
+		const { displaySocialForm, displayEmailAndPasswordForm } = this.state
+
+		this.setState({
+			displaySocialForm: !!!displaySocialForm,
+			displayEmailAndPasswordForm: !!!displayEmailAndPasswordForm
+		})
+	}
 
 	render() {
-		const { authError, auth, isLoading } = this.props;
+		const { auth, isLoading, authConfig } = this.props
+		const { displaySocialForm, displayEmailAndPasswordForm } = this.state
 
-		if (auth.uid) return <Redirect to="/" />;
+		console.log(displaySocialForm)
+
+		if (auth.uid) return <Redirect to="/" />
 
 		return (
-			<div className="container">
+			<div className="login-container z-depth-3">
 				{isLoading ? (
 					<div className="progress login-progress">
 						<div className="indeterminate" />
 					</div>
 				) : null}
-				<div className="login-buttons hoverable">
-					<h4>Sign in with:</h4>
-					<a className="waves-effect waves-light btn-large red darken-1" onClick={this.handleSubmitGoogle}>
-						<i className="fab fa-google-plus-square" /> Google
-					</a>
-					<a
-						className="waves-effect waves-light btn-large light-blue darken-1"
-						onClick={this.handleSubmitFacebook}
-					>
-						<i className="fab fa-facebook-square" /> Facebook
-					</a>
-					<div className="center grey-text mt-15">
-						No tenes cuenta? <Link to="/signup">Click!</Link>
+
+				{displaySocialForm ? <SocialForm /> : null}
+
+				{displayEmailAndPasswordForm ? <EmailAndPasswordForm /> : null}
+
+				{authConfig.socialLogin && authConfig.userPWdLogin ? (
+					<div className="toggle-form">
+						<Toggle
+							label="Authenticate with social"
+							onToggle={this.handleOnToggle}
+							labelStyle={styles.labelStyle}
+						/>
 					</div>
-					<div className="center red-text">{authError ? <p>{authError}</p> : null}</div>
-				</div>
+				) : null}
 			</div>
-		);
+		)
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
-		authError: state.auth.authError,
 		auth: state.firebase.auth,
 		isLoading: state.auth.isLoading
-	};
-};
+	}
+}
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		signInGoogle: () => dispatch(signInGoogle()),
 		signInFacebook: () => dispatch(signInFacebook())
-	};
-};
+	}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
