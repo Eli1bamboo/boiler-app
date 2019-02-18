@@ -25,8 +25,8 @@ export const createContent = (content) => {
 					authorId: authorId,
 					createdAt: new Date()
 				})
-				.then(() => {
-					dispatch({ type: 'CREATE_CONTENT_SUCCESS' });
+				.then((response) => {
+					dispatch({ type: 'CREATE_CONTENT_SUCCESS', id: response.id });
 				})
 				.catch((err) => {
 					dispatch({ type: 'CREATE_CONTENT_ERROR' }, err);

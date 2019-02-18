@@ -1,55 +1,80 @@
-import React, { Component } from 'react'
-import _ from 'lodash'
-import { connect } from 'react-redux'
-import { createContent } from '../../../../store/actions/contentActions'
-import firebase from 'firebase/app'
+import React, { Component } from 'react';
+import _ from 'lodash';
+import { connect } from 'react-redux';
+import { createContent } from '../../../../store/actions/contentActions';
+import firebase from 'firebase/app';
 
 const styles = {
 	uploadButton: {
 		marginLeft: 12,
 		Zindex: 9999
 	}
-}
+};
 
 class ImageForm extends Component {
 	constructor(props) {
-		super(props)
+		super(props);
 
 		this.state = {
 			content: {},
-			isValidFormat: null
-		}
+			validationError: ''
+		};
 
-		// create a ref to store the textInput DOM element
-		this.image = React.createRef()
+		this.imageFileInput = React.createRef();
 	}
 
 	handleChange = (e) => {
-		const state = this.state
+		const state = this.state;
 
 		this.setState({
 			content: { ...state.content, [e.target.id]: e.target.value }
-		})
-	}
+		});
+	};
+
+	handleImageInput = (e) => {
+		const state = this.state;
+		const image = e.target.files[0];
+
+		if (image) {
+			this.setState({
+				content: { ...state.content, [e.target.id]: image }
+			});
+		}
+	};
 
 	handleImageValidation = () => {
-		const image = this.image.current.files[0]
-		const validExtentions = [ 'jpg', 'png' ]
-		const maxWeight = 1000
-		const imageExtention = _.last(image.name.split('.')).toLowerCase()
+		const { content } = this.state;
+		const image = content.file;
 
-		if (this.image) {
-			console.log(imageExtention)
-			return true
-		}
-	}
+		const validExtentions = [ 'jpg', 'jpeg', 'png' ];
+		const maxWeight = 1024000;
+		const imageExtention = _.last(image.name.split('.')).toLowerCase();
+		const imageWeight = image.size;
+
+		const isValidFileType =
+			validExtentions.indexOf(imageExtention) == -1
+				? (this.setState({
+						validationError: 'Unsupported file type'
+					}),
+					false)
+				: true;
+
+		const isValidWeight = imageWeight > maxWeight ? false : true;
+
+		console.log(isValidFileType, isValidWeight);
+
+		// if () {
+		// 	console.log(imageExtention);
+		// 	return true;
+		// }
+	};
 
 	handleImageUpload = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 
 		// const image = e.target.files[0]
 
-		console.log(this.handleImageValidation())
+		console.log(this.handleImageValidation());
 
 		// console.log(this.handleImageValidation(image))
 
@@ -84,40 +109,56 @@ class ImageForm extends Component {
 		// })
 		// console.log(this.state);
 		// Uncomment this when react-redux-firebase storage reducer is working.
-	}
+	};
 
 	handleSubmit = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 
-		this.props.createContent(this.state)
-	}
+		this.props.createContent(this.state);
+	};
 
 	render() {
+		const { content, validationError } = this.state;
+
 		return (
 			<form className="white" onSubmit={this.handleSubmit}>
-				<h5 className="grey-text text-darken-3">Create a New Content</h5>
+				<h5 className="grey-text text-darken-3">Create a New Image</h5>
 				<div className="input-field">
-					<input type="text" id="title" onChange={this.handleChange} />
-					<label htmlFor="title">Content Title</label>
+					<input type="text" id="title" onChange={this.handleChange} required />
+					<label htmlFor="title">Image Title</label>
 				</div>
 				<div className="input-field">
-					<textarea id="content" className="materialize-textarea" onChange={this.handleChange} />
-					<label htmlFor="content">Content Content</label>
+					<textarea id="caption" className="materialize-textarea" onChange={this.handleChange} required />
+					<label htmlFor="caption">Image Caption</label>
 				</div>
 				<div className="flex-field">
 					<div className="file-field flex-1 input-field">
 						<div className="flex-content">
 							<div className="btn">
 								<span>Select Image</span>
-								<input type="file" id="file" ref={this.image} />
+								<input
+									type="file"
+									id="file"
+									onChange={this.handleImageInput}
+									ref={this.imageFileInput}
+									// accept="image/jpg,image/jpeg,image/png"
+									required
+								/>
 							</div>
 							<div className="file-path-wrapper flex-1">
 								<input className="file-path validate" type="text" />
 							</div>
 						</div>
-						<span className="helper-text red-text">Helper text</span>
+						{validationError.length ? (
+							<span className="helper-text red-text">{validationError}</span>
+						) : null}
 					</div>
-					<button className="btn pink lighten-1" style={styles.uploadButton} onClick={this.handleImageUpload}>
+					<button
+						className="btn pink lighten-1"
+						style={styles.uploadButton}
+						onClick={this.handleImageUpload}
+						disabled={!content.file ? 'disabled' : null}
+					>
 						Upload
 					</button>
 				</div>
@@ -125,20 +166,20 @@ class ImageForm extends Component {
 					<button className="btn pink lighten-1">Create</button>
 				</div>
 			</form>
-		)
+		);
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
 		auth: state.firebase.auth
-	}
-}
+	};
+};
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		createContent: (content) => dispatch(createContent(content))
-	}
-}
+	};
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImageForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ImageForm);
