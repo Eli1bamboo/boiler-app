@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUp } from '../../store/actions/authActions'
+import { Paper } from 'material-ui'
 
 class SignUp extends Component {
 	state = {
@@ -23,9 +24,9 @@ class SignUp extends Component {
 		const { auth, authError } = this.props
 		if (auth.uid) return <Redirect to="/" />
 		return (
-			<div className="container">
+			<Paper zDepth={3} className="signup-container">
 				<form className="white" onSubmit={this.handleSubmit}>
-					<h5 className="grey-text text-darken-3">Sign Up</h5>
+					<h5 className="grey-text text-darken-3">Register:</h5>
 					<div className="input-field">
 						<label htmlFor="email">Email</label>
 						<input type="email" id="email" onChange={this.handleChange} />
@@ -46,8 +47,11 @@ class SignUp extends Component {
 						<button className="btn pink lighten-1 z-depth-0">Sign Up</button>
 						<div className="center red-text">{authError ? <p>{authError}</p> : null}</div>
 					</div>
+					<div className="left grey-text mt-15">
+						Already have an account? <Link to="/signin">Sign in here!</Link>
+					</div>
 				</form>
-			</div>
+			</Paper>
 		)
 	}
 }

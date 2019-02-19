@@ -21,14 +21,12 @@ class EmailAndPasswordForm extends Component {
 	}
 
 	render() {
-		const { authError, authConfig } = this.props
-
-		console.log(authConfig)
+		const { authError } = this.props
 
 		return (
 			<div>
 				<form className="white" onSubmit={this.handleSubmit}>
-					<h5 className="grey-text text-darken-3">Sign In</h5>
+					<h5 className="grey-text text-darken-3">Sign in:</h5>
 					<div className="input-field">
 						<label htmlFor="email">Email</label>
 						<input type="email" id="email" onChange={this.handleChange} />
@@ -42,7 +40,7 @@ class EmailAndPasswordForm extends Component {
 						<div className="center red-text">{authError ? <p>{authError}</p> : null}</div>
 					</div>
 					<div className="left grey-text mt-15">
-						No tenes cuenta? <Link to="/signup">Click!</Link>
+						Don't have an account? <Link to="/signup">Register here!</Link>
 					</div>
 				</form>
 			</div>
