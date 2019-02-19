@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { signInGoogle, signInFacebook } from '../../store/actions/authActions'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import SocialForm from './forms/SocialForm'
 import EmailAndPasswordForm from './forms/EmailAndPasswordForm'
-import Toggle from 'material-ui/Toggle'
+import { Paper, Toggle } from 'material-ui'
 
 const styles = {
 	labelStyle: {
@@ -44,27 +44,29 @@ class SignIn extends Component {
 		if (auth.uid) return <Redirect to="/" />
 
 		return (
-			<div className="login-container z-depth-3">
+			<Fragment>
 				{isLoading ? (
 					<div className="progress login-progress">
 						<div className="indeterminate" />
 					</div>
 				) : null}
 
-				{displaySocialForm ? <SocialForm /> : null}
+				<Paper zDepth={3} className="login-container">
+					{displaySocialForm ? <SocialForm /> : null}
 
-				{displayEmailAndPasswordForm ? <EmailAndPasswordForm /> : null}
+					{displayEmailAndPasswordForm ? <EmailAndPasswordForm /> : null}
 
-				{authConfig.socialLogin && authConfig.userPWdLogin ? (
-					<div className="toggle-form">
-						<Toggle
-							label="Authenticate with social"
-							onToggle={this.handleOnToggle}
-							labelStyle={styles.labelStyle}
-						/>
-					</div>
-				) : null}
-			</div>
+					{authConfig.socialLogin && authConfig.userPWdLogin ? (
+						<div className="toggle-form">
+							<Toggle
+								label="Authenticate with social"
+								onToggle={this.handleOnToggle}
+								labelStyle={styles.labelStyle}
+							/>
+						</div>
+					) : null}
+				</Paper>
+			</Fragment>
 		)
 	}
 }

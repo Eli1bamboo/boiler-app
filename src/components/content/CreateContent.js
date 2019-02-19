@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
 import { connect } from 'react-redux'
 import { createContent } from '../../store/actions/contentActions'
 import { Redirect } from 'react-router-dom'

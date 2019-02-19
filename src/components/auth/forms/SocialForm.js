@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { signInGoogle, signInFacebook } from '../../../store/actions/authActions'
-import { Redirect, Link } from 'react-router-dom'
 
 class SocialForm extends Component {
 	handleSubmitGoogle = (e) => {
@@ -15,24 +14,24 @@ class SocialForm extends Component {
 	}
 
 	render() {
-		const { authError, authConfig } = this.props
-
-		console.log(authConfig)
+		const { authError } = this.props
 
 		return (
 			<div>
-				<h4>Sign in with:</h4>
-				<a className="waves-effect waves-light btn-large red darken-1" onClick={this.handleSubmitGoogle}>
-					<i className="fab fa-google-plus-square" /> Google
-				</a>
-				<a
-					className="waves-effect waves-light btn-large light-blue darken-1"
-					onClick={this.handleSubmitFacebook}
-				>
-					<i className="fab fa-facebook-square" /> Facebook
-				</a>
-				<div className="grey-text mt-15">
-					No tenes cuenta? <Link to="/signup">Click!</Link>
+				<h5 className="grey-text text-darken-3">Authenticate with:</h5>
+				<div className="social-buttons">
+					<a
+						className="waves-effect waves-light btn-large red darken-1 hoverable"
+						onClick={this.handleSubmitGoogle}
+					>
+						<i className="fab fa-google-plus-square" /> Google
+					</a>
+					<a
+						className="waves-effect waves-light btn-large light-blue darken-1 hoverable"
+						onClick={this.handleSubmitFacebook}
+					>
+						<i className="fab fa-facebook-square" /> Facebook
+					</a>
 				</div>
 				<div className="center red-text">{authError ? <p>{authError}</p> : null}</div>
 			</div>
