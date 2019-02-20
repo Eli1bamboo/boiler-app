@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { compose } from 'redux';
-import { Redirect } from 'react-router-dom';
-import { grantAdmin } from '../../store/actions/userActions';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
+import { Redirect } from 'react-router-dom'
+import { grantAdmin } from '../../store/actions/userActions'
+import moment from 'moment'
 
 class UserDetails extends Component {
 	handleGrantAdmin = (e) => {
-		const { id } = this.props;
+		const { id } = this.props
 
-		e.preventDefault();
+		e.preventDefault()
 
-		this.props.grantAdmin(id);
+		this.props.grantAdmin(id)
 		// this.props.history.push('/users');
-	};
+	}
 
 	render() {
-		const { user, auth } = this.props;
+		const { user, auth } = this.props
 
-		if (!auth.uid) return <Redirect to="/signin" />;
+		if (!auth.uid) return <Redirect to="/signin" />
 		if (user) {
 			return (
 				<div className="container user-details">
@@ -95,35 +95,35 @@ class UserDetails extends Component {
 						</div>
 					</div>
 				</div>
-			);
+			)
 		} else {
 			return (
 				<div className="container center">
 					<p>Loading user...</p>
 				</div>
-			);
+			)
 		}
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
-	const id = ownProps.match.params.id;
-	const users = state.firestore.data.users;
-	const user = users ? users[id] : null;
+	const id = ownProps.match.params.id
+	const users = state.firestore.data.users
+	const user = users ? users[id] : null
 
 	return {
 		id: id,
 		user: user,
 		users: users,
 		auth: state.firebase.auth
-	};
-};
+	}
+}
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		grantAdmin: (id) => dispatch(grantAdmin(id))
-	};
-};
+	}
+}
 
 export default compose(
 	connect(mapStateToProps, mapDispatchToProps),
@@ -132,4 +132,4 @@ export default compose(
 			collection: 'users'
 		}
 	])
-)(UserDetails);
+)(UserDetails)
