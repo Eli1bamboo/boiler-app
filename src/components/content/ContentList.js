@@ -7,7 +7,6 @@ const ContentList = ({ allContent }) => {
 		<div className="content-list section">
 			{allContent &&
 				allContent.map((content) => {
-					console.log(content)
 					return (
 						<Link to={'/content/' + content.id} key={content.id}>
 							<ContentSummary content={content} />

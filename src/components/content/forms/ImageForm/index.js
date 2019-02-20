@@ -18,7 +18,9 @@ class ImageForm extends Component {
 
 		this.state = {
 			content: {},
-			validationError: ''
+			imageFile: null,
+			validationError: '',
+			isUploading: false
 		}
 
 		this.imageFileInput = React.createRef()
@@ -33,20 +35,23 @@ class ImageForm extends Component {
 	}
 
 	handleImageInput = (e) => {
-		const state = this.state
 		const image = e.target.files[0]
 
 		if (image) {
-			this.setState({
-				content: { ...state.content, [e.target.id]: image }
-			})
-			console.log(image)
-			this.handleImageValidation(image)
+			this.setState(
+				{
+					imageFile: image
+				},
+				() => {
+					this.handleImageValidation()
+				}
+			)
 		}
 	}
 
-	handleImageValidation = (image) => {
-		console.log(image)
+	handleImageValidation = () => {
+		const { imageFile } = this.state
+		const image = imageFile
 
 		const validExtentions = [ 'jpg', 'jpeg', 'png' ]
 		const maxWeight = 1024000
@@ -76,47 +81,50 @@ class ImageForm extends Component {
 		) {
 			return false
 		} else {
+			this.setState({
+				validationError: null
+			})
+
 			return true
 		}
 	}
 
 	handleImageUpload = () => {
-		const state = this.state
-		const image = state.content.file
+		const { imageFile } = this.state
+		const image = imageFile
 
-		console.log(this.handleImageValidation(), image)
-
-		// const storageRef = firebase.storage().ref(`/files/${file.name}`);
-		// const task = storageRef.put(file);
-
-		// task.on('state_changed', snapshot => {
-		// 	let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-		// 	console.log(percentage);
-
-		// 	this.setState({
-		// 		isUploading: true,
-		// 		uploadValue: percentage
-		// 	})
-
-		// }, error => {
-		// 	console.log(error.message)
-		// }, () => {
-		// 	this.setState({
-		// 		uploadValue: 100,
-		// 		downloadURL: task.snapshot.downloadURL
-		// 	})
-
-		// 	this.props.createContent(this.state);
-
-		// 	setTimeout(() => {
-		// 		this.setState({
-		// 			isUploading: false
-		// 		})
-		// 	},750)
-		// })
-		// console.log(this.state);
-		// Uncomment this when react-redux-firebase storage reducer is working.
+		if (this.handleImageValidation()) {
+			const storageRef = firebase.storage().ref(`/files/${image.name}`)
+			const task = storageRef.put(image)
+			task.on(
+				'state_changed',
+				(snapshot) => {
+					let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100
+					this.setState({
+						isUploading: true,
+						uploadValue: percentage
+					})
+				},
+				(error) => {
+					console.log(error.message)
+				},
+				() => {
+					task.snapshot.ref.getDownloadURL().then((url) => {
+						this.setState(
+							{
+								uploadValue: 100,
+								content: { ...this.state.content, imageUrl: url }
+							},
+							() => {
+								this.setState({
+									isUploading: false
+								})
+							}
+						)
+					})
+				}
+			)
+		}
 	}
 
 	handleSubmit = (e) => {
@@ -126,8 +134,8 @@ class ImageForm extends Component {
 	}
 
 	render() {
-		const { content, validationError } = this.state
-
+		const { validationError } = this.state
+		console.log(this.state)
 		return (
 			<Paper zDepth={3} className="content-container">
 				<form onSubmit={this.handleSubmit}>
@@ -149,7 +157,7 @@ class ImageForm extends Component {
 									id="file"
 									onChange={this.handleImageInput}
 									ref={this.imageFileInput}
-									accept="image/jpg,image/jpeg,image/png"
+									// accept="image/jpg,image/jpeg,image/png"
 									required
 								/>
 							</div>
@@ -157,7 +165,7 @@ class ImageForm extends Component {
 								<input className="file-path validate" type="text" />
 							</div>
 						</div>
-						{validationError.length ? (
+						{validationError && validationError.length ? (
 							<span className="helper-text red-text">{validationError}</span>
 						) : null}
 					</div>
