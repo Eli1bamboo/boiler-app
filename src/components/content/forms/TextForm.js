@@ -10,14 +10,6 @@ class TextForm extends Component {
 		content: ''
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.id) {
-			const id = nextProps.id
-
-			this.props.history.push('/content/' + id)
-		}
-	}
-
 	handleChange = (e) => {
 		this.setState({
 			[e.target.id]: e.target.value
@@ -54,8 +46,7 @@ class TextForm extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		auth: state.firebase.auth,
-		id: state.content.id
+		auth: state.firebase.auth
 	}
 }
 

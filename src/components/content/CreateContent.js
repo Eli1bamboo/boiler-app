@@ -20,6 +20,16 @@ class CreateContent extends Component {
 		selectedTab: 'text'
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log('aca?')
+
+		if (nextProps.id) {
+			const id = nextProps.id
+
+			this.props.history.push('/content/' + id)
+		}
+	}
+
 	handleTabChange = (value) => {
 		this.setState({
 			selectedTab: value
@@ -58,7 +68,8 @@ class CreateContent extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		auth: state.firebase.auth
+		auth: state.firebase.auth,
+		id: state.content.id
 	}
 }
 

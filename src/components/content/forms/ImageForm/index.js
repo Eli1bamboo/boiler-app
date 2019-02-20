@@ -3,12 +3,14 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import { createContent } from '../../../../store/actions/contentActions'
 import firebase from 'firebase/app'
-import { Paper } from 'material-ui'
+import { Paper, LinearProgress } from 'material-ui'
 
 const styles = {
-	uploadButton: {
-		marginLeft: 12,
-		Zindex: 9999
+	progress: {
+		position: 'fixed',
+		width: '100%',
+		top: 0,
+		left: 0
 	}
 }
 
@@ -100,22 +102,29 @@ class ImageForm extends Component {
 				'state_changed',
 				(snapshot) => {
 					let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100
+
 					this.setState({
 						isUploading: true,
 						uploadValue: percentage
 					})
 				},
 				(error) => {
-					console.log(error.message)
+					this.setState({
+						validationError: error.message,
+						isUploading: false
+					})
 				},
 				() => {
 					task.snapshot.ref.getDownloadURL().then((url) => {
 						this.setState(
 							{
+								validationError: null,
 								uploadValue: 100,
 								content: { ...this.state.content, imageUrl: url }
 							},
 							() => {
+								this.props.createContent(this.state.content)
+
 								this.setState({
 									isUploading: false
 								})
@@ -130,14 +139,15 @@ class ImageForm extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault()
 		this.handleImageUpload()
-		// this.props.createContent(this.state)
 	}
 
 	render() {
-		const { validationError } = this.state
-		console.log(this.state)
+		const { validationError, isUploading, uploadValue } = this.state
+
 		return (
 			<Paper zDepth={3} className="content-container">
+				{isUploading ? <LinearProgress mode="determinate" value={uploadValue} style={styles.progress} /> : null}
+
 				<form onSubmit={this.handleSubmit}>
 					<h5 className="grey-text text-darken-3">Create a New Image</h5>
 					<div className="input-field">
@@ -157,7 +167,7 @@ class ImageForm extends Component {
 									id="file"
 									onChange={this.handleImageInput}
 									ref={this.imageFileInput}
-									// accept="image/jpg,image/jpeg,image/png"
+									accept="image/jpg,image/jpeg,image/png"
 									required
 								/>
 							</div>
@@ -170,7 +180,9 @@ class ImageForm extends Component {
 						) : null}
 					</div>
 					<div className="input-field">
-						<button className="btn pink lighten-1">Create</button>
+						<button className="btn pink lighten-1" disabled={isUploading ? 'disabled' : null}>
+							Create
+						</button>
 					</div>
 				</form>
 			</Paper>
