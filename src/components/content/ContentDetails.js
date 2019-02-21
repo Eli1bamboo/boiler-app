@@ -4,52 +4,44 @@ import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
 import moment from 'moment'
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card'
+import { Card, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui'
 
 const ContentDetails = (props) => {
 	const { content, auth, users } = props
 
+	const author = content && users ? users[content.authorId] : null
+
 	if (!auth.uid) return <Redirect to="/signin" />
 
-	if (content && users) {
-		const author = users ? users[content.authorId] : null
+	return (
+		<div className="container">
+			<div className="row">
+				<div className="col s12 m1 l2" />
+				{content && author ? (
+					<div className="col s12 m10 l8">
+						<Card>
+							<CardHeader title={author.displayName} subtitle={author.email} avatar={author.avatarUrl} />
 
-		console.log(author, content)
+							{content.imageUrl ? (
+								<CardMedia>
+									<img src={content.imageUrl} alt="" />
+								</CardMedia>
+							) : null}
 
-		return (
-			<Card>
-				<CardHeader title={author.displayName} subtitle={author.email} avatar={author.avatarUrl} />
+							<CardTitle title={content.title} subtitle={moment(content.createdAt.toDate()).calendar()} />
 
-				{content.imageUrl ? (
-					<CardMedia>
-						<img src={content.imageUrl} alt="" />
-					</CardMedia>
-				) : null}
-
-				<CardTitle title={content.title} subtitle={moment(content.createdAt.toDate()).calendar()} />
-
-				<CardText>{content.content || content.caption}</CardText>
-			</Card>
-			// <div className="container section content-details">
-			// 	<div className="card z-depth-0">
-			// 		<div className="card-content">
-			// 			<span className="card-title">{content.title}</span>
-			// 			<p>{content.content}</p>
-			// 		</div>
-			// 		<div className="card-action grey lighten-4 grey-text">
-			// 			<div>Posted by {content.authorName}</div>
-			// 			<div>{moment(content.createdAt.toDate()).calendar()}</div>
-			// 		</div>
-			// 	</div>
-			// </div>
-		)
-	} else {
-		return (
-			<div className="container center">
-				<p>Loading content...</p>
+							<CardText>{content.content || content.caption}</CardText>
+						</Card>
+					</div>
+				) : (
+					<div className="progress custom-progress">
+						<div className="indeterminate" />
+					</div>
+				)}
+				<div className="col s12 m1 l2" />
 			</div>
-		)
-	}
+		</div>
+	)
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -58,6 +50,7 @@ const mapStateToProps = (state, ownProps) => {
 	const content = allContent ? allContent[id] : null
 	const users = state.firestore.data.users
 
+	console.log(content)
 	return {
 		content: content,
 		users: users,

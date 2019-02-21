@@ -46,7 +46,7 @@ class SignIn extends Component {
 		return (
 			<Fragment>
 				{isLoading ? (
-					<div className="progress login-progress">
+					<div className="progress custom-progress">
 						<div className="indeterminate" />
 					</div>
 				) : null}

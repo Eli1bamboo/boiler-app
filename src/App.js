@@ -16,16 +16,25 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				<div className="App">
-					<Navbar />
-					<Switch>
-						<Route exact path="/" component={Dashboard} />
-						<Route path="/users" component={UsersList} />
-						<Route path="/user/:id" component={UserDetails} />
-						<Route path="/content/:id" component={ContentDetails} />
-						<Route path="/create" component={CreateContent} />
-						<Route path="/signin" render={(props) => <SignIn {...props} authConfig={authConfig} />} />
-						<Route path="/signup" component={SignUp} />
-					</Switch>
+					<div className="flex-layout">
+						<div className="top">
+							<Navbar />
+						</div>
+						<div className="body">
+							<Switch>
+								<Route exact path="/" component={Dashboard} />
+								<Route path="/users" component={UsersList} />
+								<Route path="/user/:id" component={UserDetails} />
+								<Route path="/content/:id" component={ContentDetails} />
+								<Route path="/create" component={CreateContent} />
+								<Route
+									path="/signin"
+									render={(props) => <SignIn {...props} authConfig={authConfig} />}
+								/>
+								<Route path="/signup" component={SignUp} />
+							</Switch>
+						</div>
+					</div>
 				</div>
 			</BrowserRouter>
 		)

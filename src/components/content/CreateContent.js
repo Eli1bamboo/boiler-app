@@ -21,8 +21,6 @@ class CreateContent extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log('aca?')
-
 		if (nextProps.id) {
 			const id = nextProps.id
 
