@@ -5,6 +5,7 @@ import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
 import moment from 'moment'
 import { Card, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui'
+import ContentImage from './ContentImage'
 
 const ContentDetails = (props) => {
 	const { content, auth, users } = props
@@ -24,7 +25,9 @@ const ContentDetails = (props) => {
 
 							{content.imageUrl ? (
 								<CardMedia>
-									<img src={content.imageUrl} alt="" />
+									<div className="img-container">
+										<ContentImage src={content.imageUrl} />
+									</div>
 								</CardMedia>
 							) : null}
 
