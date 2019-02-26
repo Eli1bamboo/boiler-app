@@ -8,6 +8,7 @@ import UsersList from './components/users/UsersList'
 import UserDetails from './components/users/UserDetails'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
+import ContentWall from './components/content/ContentWall'
 
 class App extends Component {
 	render() {
@@ -27,6 +28,7 @@ class App extends Component {
 								<Route path="/user/:id" component={UserDetails} />
 								<Route path="/content/:id" component={ContentDetails} />
 								<Route path="/create" component={CreateContent} />
+								<Route path="/wall" component={ContentWall} />
 								<Route
 									path="/signin"
 									render={(props) => <SignIn {...props} authConfig={authConfig} />}

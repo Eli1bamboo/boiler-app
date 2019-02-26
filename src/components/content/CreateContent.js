@@ -4,14 +4,7 @@ import { createContent } from '../../store/actions/contentActions'
 import { Redirect } from 'react-router-dom'
 import TextForm from './forms/TextForm'
 import ImageForm from './forms/ImageForm/'
-import Dialog from 'material-ui/Dialog'
-import { CircularProgress, Tabs, Tab } from 'material-ui'
-
-const customContentStyle = {
-	width: 'auto',
-	textAlign: 'center',
-	maxWidth: '15%'
-}
+import { Tabs, Tab } from 'material-ui'
 
 class CreateContent extends Component {
 	state = {
@@ -36,29 +29,25 @@ class CreateContent extends Component {
 
 	render() {
 		const { auth } = this.props
-		const { isUploading, uploadValue } = this.state
 
 		if (!auth.uid) return <Redirect to="/signin" />
+
 		return (
 			<div className="container">
-				<Tabs value={this.state.selectedTab} onChange={this.handleTabChange} className="form-container">
-					<Tab label="TEXT" value="text">
-						<TextForm />
-					</Tab>
-					<Tab label="IMAGE" value="image">
-						<ImageForm />
-					</Tab>
-				</Tabs>
-
-				<Dialog
-					title="Uploading file:"
-					modal={false}
-					open={isUploading}
-					contentStyle={customContentStyle}
-					onRequestClose={this.handleClose}
-				>
-					<CircularProgress mode="determinate" value={uploadValue} />
-				</Dialog>
+				<div className="row">
+					<div className="col s12 m1 l2" />
+					<div className="col s12 m10 l8">
+						<Tabs value={this.state.selectedTab} onChange={this.handleTabChange} className="form-container">
+							<Tab label="TEXT" value="text">
+								<TextForm />
+							</Tab>
+							<Tab label="IMAGE" value="image">
+								<ImageForm />
+							</Tab>
+						</Tabs>
+					</div>
+					<div className="col s12 m1 l2" />
+				</div>
 			</div>
 		)
 	}

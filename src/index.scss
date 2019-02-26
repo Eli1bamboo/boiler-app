@@ -22,9 +22,10 @@ body {
 	width: 100%;
 
 	.body {
+		margin-top: 5%;
 		flex: 1;
 		align-content: center;
-		justify-content: center;
+		justify-content: flex-start;
 		display: flex;
 		flex-direction: column;
 	}
@@ -92,6 +93,7 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 .content-container {
 	padding: 30px;
 }
+
 .custom-progress {
 	position: fixed;
 	top: 0;
@@ -123,4 +125,16 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+.card {
+	.card-image {
+		height: 135px;
+		text-align: center;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 }

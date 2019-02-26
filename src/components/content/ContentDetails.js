@@ -53,7 +53,6 @@ const mapStateToProps = (state, ownProps) => {
 	const content = allContent ? allContent[id] : null
 	const users = state.firestore.data.users
 
-	console.log(content)
 	return {
 		content: content,
 		users: users,

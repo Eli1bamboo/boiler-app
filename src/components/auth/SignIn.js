@@ -39,8 +39,6 @@ class SignIn extends Component {
 		const { auth, isLoading, authConfig } = this.props
 		const { displaySocialForm, displayEmailAndPasswordForm } = this.state
 
-		console.log(displaySocialForm)
-
 		if (auth.uid) return <Redirect to="/" />
 
 		return (

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import moment from 'moment';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 const UserList = ({ users }) => {
 	return (
@@ -8,7 +8,6 @@ const UserList = ({ users }) => {
 			<ul className="collection">
 				{users &&
 					users.map((user) => {
-						console.log(user);
 						return (
 							<li className="collection-item avatar" key={user.id}>
 								<img src={user.avatarUrl} alt="" className="circle" />
@@ -22,11 +21,11 @@ const UserList = ({ users }) => {
 									<i className="material-icons">settings</i>
 								</Link>
 							</li>
-						);
+						)
 					})}
 			</ul>
 		</div>
-	);
-};
+	)
+}
 
-export default UserList;
+export default UserList
