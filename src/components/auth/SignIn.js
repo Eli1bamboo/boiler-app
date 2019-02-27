@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { signInGoogle, signInFacebook } from '../../store/actions/authActions'
 import { Redirect } from 'react-router-dom'
 import SocialForm from './forms/SocialForm'
 import EmailAndPasswordForm from './forms/EmailAndPasswordForm'
@@ -76,11 +75,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		signInGoogle: () => dispatch(signInGoogle()),
-		signInFacebook: () => dispatch(signInFacebook())
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
+export default connect(mapStateToProps)(SignIn)

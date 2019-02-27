@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { signInGoogle, signInFacebook } from '../../../store/actions/authActions'
+import { authWithGoogle, authWithFacebook } from '../../../store/actions/authActions'
 
 class SocialForm extends Component {
 	handleSubmitGoogle = (e) => {
 		e.preventDefault()
-		this.props.signInGoogle()
+		this.props.authWithGoogle()
 	}
 
 	handleSubmitFacebook = (e) => {
 		e.preventDefault()
-		this.props.signInFacebook()
+		this.props.authWithFacebook()
 	}
 
 	render() {
@@ -47,8 +47,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		signInGoogle: () => dispatch(signInGoogle()),
-		signInFacebook: () => dispatch(signInFacebook())
+		authWithGoogle: () => dispatch(authWithGoogle()),
+		authWithFacebook: () => dispatch(authWithFacebook())
 	}
 }
 

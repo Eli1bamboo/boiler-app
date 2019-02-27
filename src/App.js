@@ -4,7 +4,7 @@ import Navbar from './components/layout/Navbar'
 import Dashboard from './components/dashboard/Dashboard'
 import ContentDetails from './components/content/ContentDetails'
 import CreateContent from './components/content/CreateContent'
-import UsersList from './components/users/UsersList'
+import Users from './components/users/Users'
 import UserDetails from './components/users/UserDetails'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
@@ -24,7 +24,7 @@ class App extends Component {
 						<div className="body">
 							<Switch>
 								<Route exact path="/" component={Dashboard} />
-								<Route path="/users" component={UsersList} />
+								<Route path="/users" component={Users} />
 								<Route path="/user/:id" component={UserDetails} />
 								<Route path="/content/:id" component={ContentDetails} />
 								<Route path="/create" component={CreateContent} />

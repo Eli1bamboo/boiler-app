@@ -18,8 +18,9 @@ class UserDetails extends Component {
 
 	render() {
 		const { user, auth } = this.props
-
+		console.log(user)
 		if (!auth.uid) return <Redirect to="/signin" />
+
 		if (user) {
 			return (
 				<div className="container user-details">

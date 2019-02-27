@@ -14,17 +14,19 @@ export const signIn = (credentials) => {
 	}
 }
 
-export const signInGoogle = () => {
+export const authWithGoogle = () => {
 	return (dispatch, getState, { getFirebase, getFirestore }) => {
 		const firebase = getFirebase()
 		const firestore = getFirestore()
 
 		dispatch({ type: 'LOGIN_LOADING' })
+
 		firebase
 			.login({ provider: 'google', type: 'popup' })
 			.then((resp) => {
 				return firestore.collection('users').doc(resp.user.uid).update({
-					lastLoginAt: new Date()
+					lastLoginAt: new Date(),
+					createdAt: new Date(resp.user.metadata.creationTime)
 				})
 			})
 			.then(() => {
@@ -36,59 +38,19 @@ export const signInGoogle = () => {
 	}
 }
 
-export const signUpGoogle = () => {
+export const authWithFacebook = () => {
 	return (dispatch, getState, { getFirebase, getFirestore }) => {
 		const firebase = getFirebase()
 		const firestore = getFirestore()
 
 		dispatch({ type: 'SIGNUP_LOADING' })
 
-		firebase
-			.login({ provider: 'google', type: 'popup' })
-			.then((resp) => {
-				return firestore.collection('users').doc(resp.user.uid).update({
-					createdAt: new Date()
-				})
-			})
-			.then(() => {
-				dispatch({ type: 'SIGNUP_SUCCESS' })
-			})
-			.catch((err) => {
-				dispatch({ type: 'SIGNUP_ERROR', err })
-			})
-	}
-}
-
-export const signInFacebook = () => {
-	return (dispatch, getState, { getFirebase }) => {
-		const firebase = getFirebase()
-
-		firebase
-			.login({
-				provider: 'facebook',
-				type: 'popup',
-				scopes: [ 'user_birthday', 'email' ]
-			})
-			.then(() => {
-				dispatch({ type: 'LOGIN_SUCCESS' })
-			})
-			.catch((err) => {
-				dispatch({ type: 'LOGIN_ERROR', err })
-			})
-	}
-}
-
-export const signUpFacebook = () => {
-	return (dispatch, getState, { getFirebase, getFirestore }) => {
-		const firebase = getFirebase()
-		const firestore = getFirestore()
-
-		dispatch({ type: 'SIGNUP_LOADING' })
 		firebase
 			.login({ provider: 'facebook', type: 'popup' })
 			.then((resp) => {
 				return firestore.collection('users').doc(resp.user.uid).update({
-					createdAt: new Date()
+					lastLoginAt: new Date(),
+					createdAt: resp.user.metadata.creationTime
 				})
 			})
 			.then(() => {
