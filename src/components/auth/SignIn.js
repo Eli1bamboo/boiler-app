@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import SocialForm from './forms/SocialForm'
 import EmailAndPasswordForm from './forms/EmailAndPasswordForm'
 import { Paper, Toggle } from 'material-ui'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 const styles = {
 	labelStyle: {
@@ -49,9 +50,20 @@ class SignIn extends Component {
 				) : null}
 
 				<Paper zDepth={3} className="login-container">
-					{displaySocialForm ? <SocialForm /> : null}
-
-					{displayEmailAndPasswordForm ? <EmailAndPasswordForm /> : null}
+					<ReactCSSTransitionGroup
+						transitionName="modalTransition"
+						transitionEnterTimeout={100}
+						transitionLeaveTimeout={100}
+					>
+						{displaySocialForm ? <SocialForm /> : null}
+					</ReactCSSTransitionGroup>
+					<ReactCSSTransitionGroup
+						transitionName="modalTransition"
+						transitionEnterTimeout={100}
+						transitionLeaveTimeout={100}
+					>
+						{displayEmailAndPasswordForm ? <EmailAndPasswordForm /> : null}
+					</ReactCSSTransitionGroup>
 
 					{authConfig.socialLogin && authConfig.userPWdLogin ? (
 						<div className="toggle-form">

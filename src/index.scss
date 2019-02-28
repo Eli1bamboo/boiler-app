@@ -138,3 +138,21 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 		justify-content: center;
 	}
 }
+
+.modalTransition-enter {
+	opacity: 0;
+}
+
+.modalTransition-enter.modalTransition-enter-active {
+	opacity: 1;
+	transition: opacity 100ms ease-in;
+}
+
+.modalTransition-leave {
+	opacity: 1;
+}
+
+.modalTransition-leave.modalTransition-leave-active {
+	opacity: 0;
+	transition: opacity 100ms ease-out;
+}
